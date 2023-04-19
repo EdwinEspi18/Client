@@ -1,20 +1,35 @@
-import { NextPage, GetServerSideProps, GetServerSidePropsContext } from "next";
+import { useEffect } from "react";
+import {
+  NextPage,
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+} from "next";
 import { UserCircleIcon, StarIcon } from "@heroicons/react/24/solid";
-
+import { createServerSideHelpers } from "@trpc/react-query/server";
 import { TableServices } from "@/components/TableServices";
 
 import { SliderImages } from "@/components/SilderImage";
 
 import { supabase } from "@/supabase/client";
+import { byId } from "@/utils/querys";
+import { appRouter } from "@/server/routers/_app";
 
-interface Iprops {
-  name: string;
-}
+const IdPage = (
+  props: InferGetServerSidePropsType<typeof getServerSideProps>
+) => {
+  const owner_id: string = "c73e0ff9-5d76-492d-b450-cc7135e30340";
+  useEffect(() => {
+    async function ee() {
+      const { data, error } = await byId(owner_id);
+      console.log(data, error);
+    }
+    ee();
+  }, []);
 
-const IdPage: NextPage<Iprops> = (props) => {
   return (
     <div className='h-screen w-full'>
-      <h1 className='text-center text-3xl font-bold'>{props.name}</h1>
+      <h1 className='text-center text-3xl font-bold'>ll</h1>
       <div className='grid grid-cols-2 grid-rows-1 w-full h-full'>
         <div className='w-full flex justify-center'>
           <div className='w-full mt-10'>
@@ -22,19 +37,10 @@ const IdPage: NextPage<Iprops> = (props) => {
           </div>
         </div>
         <div className='w-full'>
-          <div className='w-8/12 h-96 flex flex-col items-center justify-center rounded-lg mx-auto mt-10n'>
+          <div className='w-8/12 h-[460px] flex flex-col items-center justify-center rounded-lg mx-auto '>
             <SliderImages />
-            <div className='w-full h-12 bg-white rounded-bl-lg rounded-br-lg flex justify-between items-center'>
-              <button className='bg-blue-600 w-12 h-12 text-2xl'>«</button>
-              <div className='w-4/12 flex justify-evenly'>
-                <div className='w-10 h-10 bg-black'></div>
-                <div className='w-10 h-10 bg-black'></div>
-                <div className='w-10 h-10 bg-black'></div>
-              </div>
-              <button className='bg-blue-600 w-12 h-12 text-2xl '>»</button>
-            </div>
           </div>
-          <div className='mt-8 w-8/12 h-40 bg-gray-200 mx-auto rounded-lg'>
+          <div className='w-8/12 h-40 bg-gray-200 mx-auto rounded-lg'>
             <h2 className='font-bold pt-3 pl-5'>Ubicacion</h2>
             <p className='pl-5'>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt
@@ -132,44 +138,19 @@ const IdPage: NextPage<Iprops> = (props) => {
   );
 };
 
-export default IdPage;
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: {},
+  });
 
-export const getServerSideProps: GetServerSideProps = async (
-  ctx: GetServerSidePropsContext
-) => {
-  const owner_id = ctx.params?.id as string;
-  /* 
-  try {
-    const { data, error } = await supabase.rpc("fetch_store_info_by_owner_id", {
-      owner_id,
-    });
-    if (data === null) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-    return {
-      props: {
-        data,
-        error,
-      },
-    };
-  } catch (err) {
-    console.log(err);
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  } */
-
+  const result = await helpers.getStore.fetch();
+  console.log(result);
   return {
     props: {
-      name: "Server",
+      trpcState: helpers.dehydrate(),
     },
   };
 };
+
+export default IdPage;

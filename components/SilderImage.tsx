@@ -25,22 +25,37 @@ export const SliderImages = () => {
     },
   ];
   return (
-    <div className='w-full h-96 m-auto py-16 px-4 relative group'>
+    <div className='w-full h-full m-auto py-16 px-4 relative group'>
       <div
         style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-        className='w-full h-full rounded-2xl bg-center bg-cover duration-500'
+        className='w-full h-full rounded-tl-2xl rounded-tr-2xl bg-center bg-cover duration-500'
       ></div>
-      <div
-        onClick={prevSlide}
-        className='hidden group-hover:block absolute top-[50%] left-5 -translate-x-0 -translate-y-[50%] text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer '
-      >
-        <ChevronLeftIcon width={30} />
-      </div>
-      <div
-        onClick={nextSlide}
-        className='hidden group-hover:block absolute top-[50%] right-5 -translate-x-0 -translate-y-[50%] text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer '
-      >
-        <ChevronRightIcon width={30} />
+
+      <div className='w-full h-12  rounded-bl-2xl rounded-br-2xl flex justify-between items-center mx-auto bg-sky-400'>
+        <div
+          onClick={prevSlide}
+          className='text-2xl rounded-bl-2xl p-2 bg-black/20 text-white cursor-pointer '
+        >
+          <ChevronLeftIcon width={30} />
+        </div>
+        <div className='w-4/12 flex justify-evenly'>
+          {slides.map((image, index) => {
+            return (
+              <div
+                onClick={() => setCurrentIndex(index)}
+                key={index}
+                style={{ backgroundImage: `url(${image.url})` }}
+                className='w-10 h-10 bg-cover cursor-pointer'
+              ></div>
+            );
+          })}
+        </div>
+        <div
+          onClick={nextSlide}
+          className='text-2xl rounded-br-2xl p-2 bg-black/20 text-white cursor-pointer '
+        >
+          <ChevronRightIcon width={30} />
+        </div>
       </div>
     </div>
   );
