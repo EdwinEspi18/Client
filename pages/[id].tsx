@@ -1,4 +1,9 @@
 import { NextPage, GetServerSideProps, GetServerSidePropsContext } from "next";
+import { UserCircleIcon, StarIcon } from "@heroicons/react/24/solid";
+
+import { TableServices } from "@/components/TableServices";
+
+import { SliderImages } from "@/components/SilderImage";
 
 import { supabase } from "@/supabase/client";
 
@@ -9,14 +14,16 @@ interface Iprops {
 const IdPage: NextPage<Iprops> = (props) => {
   return (
     <div className='h-screen w-full'>
-      <h1 className='text-center'>{props.name}</h1>
-      <div className='grid grid-cols-2 grid-rows-1 w-full h-full bg-black '>
-        <div className='bg-red-500 w-full'></div>
-        <div className='bg-blue-500 w-full'>
-          <div className='w-8/12 h-96 flex flex-col items-center justify-center bg-red-600 rounded-lg mx-auto mt-10 overflow-hidden'>
-            <div className='h-full flex items-center justify-center'>
-              <p className='text-white font-bold text-xl'>Slide de Imagen</p>
-            </div>
+      <h1 className='text-center text-3xl font-bold'>{props.name}</h1>
+      <div className='grid grid-cols-2 grid-rows-1 w-full h-full'>
+        <div className='w-full flex justify-center'>
+          <div className='w-full mt-10'>
+            <TableServices />
+          </div>
+        </div>
+        <div className='w-full'>
+          <div className='w-8/12 h-96 flex flex-col items-center justify-center rounded-lg mx-auto mt-10n'>
+            <SliderImages />
             <div className='w-full h-12 bg-white rounded-bl-lg rounded-br-lg flex justify-between items-center'>
               <button className='bg-blue-600 w-12 h-12 text-2xl'>«</button>
               <div className='w-4/12 flex justify-evenly'>
@@ -47,32 +54,76 @@ const IdPage: NextPage<Iprops> = (props) => {
             <div className='w-full pl-5 flex flex-col justify-around items-start h-56'>
               <div className='w-5/6 flex justify-between items-center'>
                 <span>Lunes</span>
-                <span>2</span>
+                <span>10:00 - 19:30</span>
               </div>
               <div className='w-5/6 flex justify-between items-center'>
                 <span>Martes</span>
-                <span>1</span>
+                <span>10:00 - 19:30</span>
               </div>
               <div className='w-5/6 flex justify-between items-center'>
                 <span>Miercoles</span>
-                <span>3</span>
+                <span>10:00 - 19:30</span>
               </div>
               <div className='w-5/6 flex justify-between items-center'>
                 <span>Jueves</span>
-                <span>4</span>
+                <span>10:00 - 19:30</span>
               </div>
               <div className='w-5/6 flex justify-between items-center'>
                 <span>Viernes</span>
-                <span>5</span>
+                <span>10:00 - 19:30</span>
               </div>
               <div className='w-5/6 flex justify-between items-center'>
                 <span>Sabado</span>
-                <span>6</span>
+                <span>10:00 - 19:30</span>
               </div>
-              <div className='w-5/6 flex justify-between items-center'>
+              <div className='w-5/6 flex justify-between items-center '>
                 <span>Domingo</span>
-                <span>7</span>
+                <span>Cerrado</span>
               </div>
+            </div>
+          </div>
+          <div className='mt-8 w-8/12 h-auto bg-gray-200 mx-auto rounded-lg'>
+            <h2 className='font-bold pt-3 pl-5'>Miembros</h2>
+            <div className='flex flex-col justify-between p-3 w-4/6'>
+              <div className='flex justify-between items-center'>
+                <UserCircleIcon width={70} />
+                <span>Edwin Espinal</span>
+              </div>
+              <div className='flex justify-between items-center'>
+                <UserCircleIcon width={70} />
+                <span>Edwin Espinal</span>
+              </div>
+              <div className='flex justify-between items-center'>
+                <UserCircleIcon width={70} />
+                <span>Edwin Espinal</span>
+              </div>
+            </div>
+          </div>
+          <div className='mt-3 w-8/12 h-auto mx-auto rounded-lg'>
+            <h2 className='font-bold text-2xl'>Reseñas de clientes ( # )</h2>
+          </div>
+          <div className='flex flex-col justify-around w-8/12 h-20 mx-auto rounded-lg bg-gray-200 mt-3 p-6'>
+            <div className='flex justify-between items-center'>
+              <span>Usuario</span>
+              <span>12-04-2023</span>
+            </div>
+            <div className='flex gap-2 mt-3'>
+              <StarIcon width={20} />
+              <StarIcon width={20} />
+              <StarIcon width={20} />
+              <StarIcon width={20} />
+            </div>
+          </div>
+          <div className='flex flex-col justify-around w-8/12 h-20 mx-auto rounded-lg bg-gray-200 mt-3 p-6'>
+            <div className='flex justify-between items-center'>
+              <span>Usuario</span>
+              <span>12-04-2023</span>
+            </div>
+            <div className='flex gap-2 mt-3 '>
+              <StarIcon width={20} />
+              <StarIcon width={20} />
+              <StarIcon width={20} />
+              <StarIcon width={20} />
             </div>
           </div>
         </div>

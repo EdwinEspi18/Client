@@ -1,7 +1,9 @@
+import { SliderImages } from "@/components/SilderImage";
+
 export default function Home() {
   return (
-    <div>
-      <h1>Hola Mundo</h1>
+    <div className='w-fullh h-screen bg-black'>
+      <SliderImages />
     </div>
   );
 }
