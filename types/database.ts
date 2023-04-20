@@ -162,6 +162,7 @@ export interface Stores {
   color_hex: string;
   store_categories?: Store_categories;
   currencies?: Currencies;
+  store_name: string;
 }
 
 export interface Appointment_with_details {

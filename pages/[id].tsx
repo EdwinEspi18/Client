@@ -1,46 +1,56 @@
-import { useEffect } from "react";
-import {
-  NextPage,
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-} from "next";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { UserCircleIcon, StarIcon } from "@heroicons/react/24/solid";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { TableServices } from "@/components/TableServices";
 
 import { SliderImages } from "@/components/SilderImage";
-
-import { supabase } from "@/supabase/client";
-import { byId } from "@/utils/querys";
 import { appRouter } from "@/server/routers/_app";
+import { trpc } from "@/utils/trpc";
+import { Stores } from "@/types/database";
+import { UseTRPCQueryResult } from "@trpc/react-query/shared";
+
+export interface IResult {
+  data: Stores[];
+  error: object | null;
+}
 
 const IdPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
-  const owner_id: string = "c73e0ff9-5d76-492d-b450-cc7135e30340";
-  useEffect(() => {
-    async function ee() {
-      const { data, error } = await byId(owner_id);
-      console.log(data, error);
-    }
-    ee();
-  }, []);
+  const days = {
+    1: "Lunes",
+    2: "Martes",
+    3: "Miercoles",
+    4: "Jueves",
+    5: "Viernes",
+    6: "Sabado",
+    7: "Domingo",
+  };
+  const { owner_id } = props;
+
+  const { data, isLoading } = trpc.getStore.useQuery(owner_id);
+  const color = `#${data.data[0].color_hex}`;
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className='h-screen w-full'>
-      <h1 className='text-center text-3xl font-bold'>ll</h1>
+      <h1 className='pt-3 text-center text-3xl font-bold'>
+        {data.data[0].store_name}
+      </h1>
       <div className='grid grid-cols-2 grid-rows-1 w-full h-full'>
         <div className='w-full flex justify-center'>
           <div className='w-full mt-10'>
-            <TableServices />
+            <TableServices items={data.data[0].items} />
           </div>
         </div>
         <div className='w-full'>
-          <div className='w-8/12 h-[460px] flex flex-col items-center justify-center rounded-lg mx-auto '>
-            <SliderImages />
-          </div>
-          <div className='w-8/12 h-40 bg-gray-200 mx-auto rounded-lg'>
+          {data.data[0].images && (
+            <div className='w-8/12 h-[460px] flex flex-col items-center justify-center rounded-lg mx-auto '>
+              <SliderImages />
+            </div>
+          )}
+          <div className={`w-8/12 h-40 bg-[${color}]/50 mx-auto rounded-lg`}>
             <h2 className='font-bold pt-3 pl-5'>Ubicacion</h2>
             <p className='pl-5'>
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nesciunt
@@ -57,35 +67,20 @@ const IdPage = (
           </div>
           <div className='mt-8 w-8/12 h-64 bg-gray-200 mx-auto rounded-lg'>
             <h2 className='font-bold pt-2 pl-5'>Horas de trabajo</h2>
-            <div className='w-full pl-5 flex flex-col justify-around items-start h-56'>
-              <div className='w-5/6 flex justify-between items-center'>
-                <span>Lunes</span>
-                <span>10:00 - 19:30</span>
-              </div>
-              <div className='w-5/6 flex justify-between items-center'>
-                <span>Martes</span>
-                <span>10:00 - 19:30</span>
-              </div>
-              <div className='w-5/6 flex justify-between items-center'>
-                <span>Miercoles</span>
-                <span>10:00 - 19:30</span>
-              </div>
-              <div className='w-5/6 flex justify-between items-center'>
-                <span>Jueves</span>
-                <span>10:00 - 19:30</span>
-              </div>
-              <div className='w-5/6 flex justify-between items-center'>
-                <span>Viernes</span>
-                <span>10:00 - 19:30</span>
-              </div>
-              <div className='w-5/6 flex justify-between items-center'>
-                <span>Sabado</span>
-                <span>10:00 - 19:30</span>
-              </div>
-              <div className='w-5/6 flex justify-between items-center '>
-                <span>Domingo</span>
-                <span>Cerrado</span>
-              </div>
+            <div className='w-full pl-5 pb-2  flex flex-col justify-around items-start h-56'>
+              {data.data[0].schedules.map((schedule, index) => (
+                <div
+                  key={index}
+                  className='w-5/6 flex justify-between items-center'
+                >
+                  <span>{days[schedule.day]}</span>
+                  <span>
+                    {schedule.is_closed
+                      ? "Close"
+                      : `${schedule.time_from} - ${schedule.time_to}`}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
           <div className='mt-8 w-8/12 h-auto bg-gray-200 mx-auto rounded-lg'>
@@ -106,7 +101,9 @@ const IdPage = (
             </div>
           </div>
           <div className='mt-3 w-8/12 h-auto mx-auto rounded-lg'>
-            <h2 className='font-bold text-2xl'>Reseñas de clientes ( # )</h2>
+            <h2 className='font-bold text-2xl'>
+              Reseñas de clientes ( {data.data[0].reviews === null ? "0" : "#"})
+            </h2>
           </div>
           <div className='flex flex-col justify-around w-8/12 h-20 mx-auto rounded-lg bg-gray-200 mt-3 p-6'>
             <div className='flex justify-between items-center'>
@@ -139,16 +136,25 @@ const IdPage = (
 };
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const owner_id = ctx.params?.id as string;
+
   const helpers = createServerSideHelpers({
     router: appRouter,
     ctx: {},
   });
 
-  const result = await helpers.getStore.fetch();
-  console.log(result);
+  const exists = await helpers.getStore.fetch(owner_id);
+  if (exists.error) {
+    return {
+      notFound: true,
+    };
+  }
+  await helpers.getStore.prefetch(owner_id);
+
   return {
     props: {
       trpcState: helpers.dehydrate(),
+      owner_id,
     },
   };
 };

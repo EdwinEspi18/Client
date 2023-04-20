@@ -1,11 +1,9 @@
-export const TableServices = () => {
+export const TableServices = ({ items }) => {
   return (
     <table className='border-collapse w-3/5 mx-auto'>
       <thead>
         <tr>
-          <th className='p-3 font-bold uppercase bg-gray-700 text-white border border-gray-300 hidden lg:table-cell'>
-            ..
-          </th>
+          <th className='p-3 font-bold uppercase bg-gray-700 text-white border border-gray-300 hidden lg:table-cell'></th>
           <th className='p-3 font-bold uppercase bg-gray-700 text-white border border-gray-300 hidden lg:table-cell'>
             Servicio
           </th>
@@ -15,54 +13,27 @@ export const TableServices = () => {
         </tr>
       </thead>
       <tbody>
-        <tr className='bg-white lg:hover:bg-gray-400 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0'>
-          <td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
-            <input type='checkbox' />
-          </td>
-          <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
-            Servicio #1
-          </td>
+        {items.map((item: any) => (
+          <tr
+            key={item.id}
+            className=' bg-white lg:hover:bg-gray-400 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0'
+          >
+            <td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
+              <input
+                className='group/chec h-5 w-5 cursor-pointer'
+                type='checkbox'
+                value={item.id}
+              />
+            </td>
+            <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
+              {item.name}
+            </td>
 
-          <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
-            $ 100
-          </td>
-        </tr>
-        <tr className='bg-white lg:hover:bg-gray-400 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0'>
-          <td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
-            <input type='checkbox' />
-          </td>
-          <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
-            Servicio #2
-          </td>
-
-          <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
-            $ 100
-          </td>
-        </tr>
-        <tr className='bg-white lg:hover:bg-gray-400 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0'>
-          <td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
-            <input type='checkbox' />
-          </td>
-          <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
-            Servicio #3
-          </td>
-
-          <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
-            $ 100
-          </td>
-        </tr>
-        <tr className='bg-white lg:hover:bg-gray-400 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0'>
-          <td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
-            <input type='checkbox' />
-          </td>
-          <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
-            Servicio #4
-          </td>
-
-          <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
-            $ 100
-          </td>
-        </tr>
+            <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
+              {`${item.price} DOP`}
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
