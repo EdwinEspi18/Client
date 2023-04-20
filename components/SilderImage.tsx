@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { Store_images } from "@/types/database";
 
-export const SliderImages = () => {
+interface Props {
+  images?: Store_images[];
+}
+export const SliderImages = (images?: Props) => {
   const prevSlide = () => {
     const isFirst = currentIndex === 0;
     const newIndex = isFirst ? slides.length - 1 : currentIndex - 1;

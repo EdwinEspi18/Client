@@ -163,6 +163,10 @@ export interface Stores {
   store_categories?: Store_categories;
   currencies?: Currencies;
   store_name: string;
+  images: Store_images[];
+  items: Items[];
+  schedules: Store_schedules[];
+  reviews: Store_ratings[];
 }
 
 export interface Appointment_with_details {
