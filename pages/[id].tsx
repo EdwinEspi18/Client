@@ -7,7 +7,6 @@ import { SliderImages } from "@/components/SilderImage";
 import { appRouter } from "@/server/routers/_app";
 import { trpc } from "@/utils/trpc";
 import { Stores } from "@/types/database";
-import { UseTRPCQueryResult } from "@trpc/react-query/shared";
 
 export interface IResult {
   data: Stores[];
@@ -28,24 +27,27 @@ const IdPage = (
   };
   const { owner_id } = props;
 
-  const { data, isLoading } = trpc.getStore.useQuery(owner_id);
-  const color = `#${data.data[0].color_hex}`;
+  const {
+    data: { data },
+    isLoading,
+  } = trpc.getStore.useQuery(owner_id);
+  const color = `#${data[0].color_hex}`;
 
   if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className='h-screen w-full'>
       <h1 className='pt-3 text-center text-3xl font-bold'>
-        {data.data[0].store_name}
+        {data[0].store_name}
       </h1>
       <div className='grid grid-cols-2 grid-rows-1 w-full h-full'>
         <div className='w-full flex justify-center'>
           <div className='w-full mt-10'>
-            <TableServices items={data.data[0].items} />
+            <TableServices items={data[0].items} />
           </div>
         </div>
         <div className='w-full'>
-          {data.data[0].images && (
+          {data[0].images && (
             <div className='w-8/12 h-[460px] flex flex-col items-center justify-center rounded-lg mx-auto '>
               <SliderImages />
             </div>
@@ -68,7 +70,7 @@ const IdPage = (
           <div className='mt-8 w-8/12 h-64 bg-gray-200 mx-auto rounded-lg'>
             <h2 className='font-bold pt-2 pl-5'>Horas de trabajo</h2>
             <div className='w-full pl-5 pb-2  flex flex-col justify-around items-start h-56'>
-              {data.data[0].schedules.map((schedule, index) => (
+              {data[0].schedules.map((schedule, index) => (
                 <div
                   key={index}
                   className='w-5/6 flex justify-between items-center'
@@ -102,7 +104,7 @@ const IdPage = (
           </div>
           <div className='mt-3 w-8/12 h-auto mx-auto rounded-lg'>
             <h2 className='font-bold text-2xl'>
-              Reseñas de clientes ( {data.data[0].reviews === null ? "0" : "#"})
+              Reseñas de clientes ( {data[0].reviews === null ? "0" : "#"})
             </h2>
           </div>
           <div className='flex flex-col justify-around w-8/12 h-20 mx-auto rounded-lg bg-gray-200 mt-3 p-6'>
