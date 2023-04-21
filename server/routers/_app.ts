@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { procedure, router } from "../trpc";
 import { supabase } from "@/supabase/client";
-import { IResult } from "@/pages/[id]";
 
 export const appRouter = router({
   hello: procedure

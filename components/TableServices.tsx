@@ -1,15 +1,47 @@
-export const TableServices = ({ items }) => {
+import { ChangeEvent, useState } from "react";
+
+import { Items } from "@/types/database";
+
+interface Props {
+  items: Items[];
+  color?: string;
+}
+const ButtonBook = () => {
+  return (
+    <button className='fixed  bottom-5 right-5 bg-yellow-400 w-32 h-12 rounded-xl'>
+      Reservar
+    </button>
+  );
+};
+
+export const TableServices = ({ items, color = "#2222" }: Props) => {
+  const [bb, setBb] = useState(false);
+  const handleChecked = (e: ChangeEvent<HTMLInputElement>) => {
+    e.target.checked ? setBb(true) : setBb(false);
+    console.log(e.target.value);
+  };
   return (
     <div className='w-full flex justify-center'>
       <div className='w-full mt-10'>
         <table className='border-collapse w-3/5 mx-auto'>
           <thead>
             <tr>
-              <th className='p-3 font-bold uppercase bg-gray-700 text-white border border-gray-300 hidden lg:table-cell'></th>
-              <th className='p-3 font-bold uppercase bg-gray-700 text-white border border-gray-300 hidden lg:table-cell'>
+              <th
+                style={{ backgroundColor: color }}
+                className={`p-3 font-bold uppercase  border border-gray-300 hidden lg:table-cell`}
+              >
+                {" "}
+              </th>
+              <th
+                style={{ backgroundColor: color }}
+                className={`p-3 font-bold uppercase  border border-gray-300 hidden lg:table-cell`}
+              >
                 Servicio
               </th>
-              <th className='p-3 font-bold uppercase bg-gray-700 text-white border border-gray-300 hidden lg:table-cell'>
+              <th
+                style={{ backgroundColor: color }}
+                className={`p-3 font-bold uppercase  border border-gray-300 hidden lg:table-cell`}
+              >
                 Precio
               </th>
             </tr>
@@ -25,6 +57,7 @@ export const TableServices = ({ items }) => {
                     className='group/chec h-5 w-5 cursor-pointer'
                     type='checkbox'
                     value={item.id}
+                    onChange={handleChecked}
                   />
                 </td>
                 <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
@@ -39,6 +72,7 @@ export const TableServices = ({ items }) => {
           </tbody>
         </table>
       </div>
+      {bb && <ButtonBook />}
     </div>
   );
 };
