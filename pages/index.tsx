@@ -19,9 +19,9 @@ export default function Home() {
   };
 
   return (
-    <div className='w-full h-screen bg-white text-white'>
+    <div className='w-full h-screen bg-white text-black'>
       Home
-      <div className=''>
+      <div className='w-96 h-96'>
         <p className='text-black'>
           Selected date:{" "}
           {date ? format(date, "dd MMMM yyyy", { locale: es }) : "none"}.
@@ -31,10 +31,8 @@ export default function Home() {
           onDateChange={handleChangeDate}
           locale={es}
           modifiers={modifiers}
+          minimumDate={new Date()}
         />
-      </div>
-      <div className='bg-black'>
-        <Modal />
       </div>
     </div>
   );

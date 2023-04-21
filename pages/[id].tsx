@@ -92,7 +92,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     ctx: {},
   });
   const exists = await helpers.getStore.fetch(owner_id);
-  console.log(exists.data[0]);
   if (exists.error) {
     return {
       notFound: true,
