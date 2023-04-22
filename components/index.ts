@@ -4,3 +4,7 @@ export * from "./SilderImage";
 export * from "./StaffMember";
 export * from "./TableServices";
 export * from "./UbicacionCard";
+export * from "./Sppiner";
+export * from "./HoursAvaible";
+export * from "./Modal";
+export * from "./FormCustomer";

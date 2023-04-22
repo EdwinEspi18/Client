@@ -40,6 +40,25 @@ export const appRouter = router({
     });
     return { data, error };
   }),
+  getSchedulesAvaible: procedure
+    .input(
+      z.object({
+        duration_in_minutes: z.number(),
+        profile_id: z.string(),
+        start_date: z.string(),
+      })
+    )
+    .query(
+      async ({ input: { duration_in_minutes, profile_id, start_date } }) => {
+        let { data, error } = await supabase.rpc("fetch_available_schedules", {
+          duration_in_minutes,
+          profile_id,
+          start_date,
+        });
+
+        return { data, error };
+      }
+    ),
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

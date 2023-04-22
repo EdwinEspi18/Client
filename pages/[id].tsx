@@ -1,12 +1,16 @@
-import {
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-  NextPage,
-} from "next";
+import { useState } from "react";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { createServerSideHelpers } from "@trpc/react-query/server";
+import { shallow } from "zustand/shallow";
+import { format, getDate, getDay } from "date-fns";
+import es from "date-fns/locale/es";
 
-import { appRouter } from "@/server/routers/_app";
+import "react-nice-dates/build/style.css";
+
 import { trpc } from "@/utils/trpc";
+import { Stores } from "@/types/database";
+import { appRouter } from "@/server/routers/_app";
+import { useStore } from "@/store/store";
 
 import {
   ReviewsCard,
@@ -15,10 +19,9 @@ import {
   StaffMember,
   TableServices,
   UbicationCard,
+  Modal,
+  Sppiner,
 } from "@/components";
-import { Stores } from "@/types/database";
-import { shallow } from "zustand/shallow";
-import { useStore } from "@/store/store";
 
 const IdPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -31,18 +34,46 @@ const IdPage = (
     shallow
   );
   const { owner_id } = props;
+  const [date, setDate] = useState(new Date());
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  const modifiers = (day: number) => {
+    return {
+      disabled: (date: Date) => getDay(date) === day,
+    };
+  };
+
+  const handleChangeDate = (e: any) => {
+    const dateFormat = format(e, "dd/MM/yyyy", { locale: es });
+    openModal();
+    setDate(e);
+    console.log(e);
+  };
 
   const {
     data: { data },
     isLoading,
-  } = trpc.getStore.useQuery(owner_id);
+  } = trpc.getStore.useQuery(owner_id, {
+    onSuccess(data) {
+      console.log(data);
+    },
+  });
 
   const store: Stores = data[0];
 
   const color = `#${store.color_hex}`;
   setColorPrimary(color);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Sppiner />;
 
   return (
     <div className='h-screen w-full relative'>
@@ -50,7 +81,11 @@ const IdPage = (
         {store.store_name}
       </h1>
       <div className='grid grid-cols-2 grid-rows-1 w-full h-full'>
-        <TableServices color={colorState} items={store.items} />
+        <TableServices
+          color={colorState}
+          items={store.items}
+          openModal={openModal}
+        />
 
         <div className='w-full'>
           {store.images && (
@@ -79,6 +114,14 @@ const IdPage = (
               <ReviewsCard key={review.comment} reviews={review} />
             ))}
         </div>
+        <Modal
+          isOpen={isOpen}
+          closeModal={closeModal}
+          date={date}
+          modifiers={{ disabled: (date: Date) => getDay(date) === 6 }}
+          handleChangeDate={handleChangeDate}
+          owner_id={owner_id}
+        />
       </div>
     </div>
   );

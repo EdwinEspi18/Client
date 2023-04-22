@@ -5,16 +5,20 @@ import { Items } from "@/types/database";
 interface Props {
   items: Items[];
   color?: string;
+  openModal: () => void;
 }
-const ButtonBook = () => {
+const ButtonBook = ({ openModal }) => {
   return (
-    <button className='fixed  bottom-5 right-5 bg-yellow-400 w-32 h-12 rounded-xl'>
+    <button
+      onClick={openModal}
+      className='fixed  bottom-5 right-5 bg-yellow-400 w-32 h-12 rounded-xl'
+    >
       Reservar
     </button>
   );
 };
 
-export const TableServices = ({ items, color = "#2222" }: Props) => {
+export const TableServices = ({ items, color = "#2222", openModal }: Props) => {
   const [bb, setBb] = useState(false);
   const handleChecked = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.checked ? setBb(true) : setBb(false);
@@ -72,7 +76,7 @@ export const TableServices = ({ items, color = "#2222" }: Props) => {
           </tbody>
         </table>
       </div>
-      {bb && <ButtonBook />}
+      {bb && <ButtonBook openModal={openModal} />}
     </div>
   );
 };
