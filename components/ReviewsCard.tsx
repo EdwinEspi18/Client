@@ -5,7 +5,7 @@ interface Props {
 }
 export const ReviewsCard = ({ reviews }: Props) => {
   return (
-    <div className='flex flex-col justify-around w-8/12 h-20 mx-auto rounded-lg bg-gray-200 mt-3 p-6'>
+    <div className=' flex flex-col justify-around w-8/12 h-20 mx-auto rounded-lg bg-gray-200 mt-3 p-6'>
       <div className='flex justify-between items-center'>
         <span>{reviews.profiles?.name}</span>
         <span>{reviews.created_at}</span>

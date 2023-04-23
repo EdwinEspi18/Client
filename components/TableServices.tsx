@@ -1,13 +1,15 @@
 import { ChangeEvent, useState } from "react";
 
 import { Items } from "@/types/database";
+import { useStore } from "@/store/store";
+import { shallow } from "zustand/shallow";
 
 interface Props {
   items: Items[];
   color?: string;
   openModal: () => void;
 }
-const ButtonBook = ({ openModal }) => {
+const ButtonBook = ({ openModal }: any) => {
   return (
     <button
       onClick={openModal}
@@ -18,65 +20,68 @@ const ButtonBook = ({ openModal }) => {
   );
 };
 
-export const TableServices = ({ items, color = "#2222", openModal }: Props) => {
+export const TableServices = () => {
+  const state = useStore(
+    (state) => ({
+      store: state.store,
+      date: state.date,
+      color: state.color,
+      openModal: state.openModal,
+    }),
+    shallow
+  );
+
   const [bb, setBb] = useState(false);
   const handleChecked = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.checked ? setBb(true) : setBb(false);
     console.log(e.target.value);
   };
   return (
-    <div className='w-full flex justify-center'>
-      <div className='w-full mt-10'>
-        <table className='border-collapse w-3/5 mx-auto'>
-          <thead>
-            <tr>
-              <th
-                style={{ backgroundColor: color }}
-                className={`p-3 font-bold uppercase  border border-gray-300 hidden lg:table-cell`}
-              >
-                {" "}
-              </th>
-              <th
-                style={{ backgroundColor: color }}
-                className={`p-3 font-bold uppercase  border border-gray-300 hidden lg:table-cell`}
-              >
-                Servicio
-              </th>
-              <th
-                style={{ backgroundColor: color }}
-                className={`p-3 font-bold uppercase  border border-gray-300 hidden lg:table-cell`}
-              >
-                Precio
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item: any) => (
-              <tr
-                key={item.id}
-                className=' bg-white lg:hover:bg-gray-400 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0'
-              >
-                <td className='w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static'>
-                  <input
-                    className='group/chec h-5 w-5 cursor-pointer'
-                    type='checkbox'
-                    value={item.id}
-                    onChange={handleChecked}
-                  />
-                </td>
-                <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
-                  {item.name}
-                </td>
+    <div className='h-auto'>
+      <table className='table-auto shadow-lg  border-collapse'>
+        <thead>
+          <tr>
+            <th
+              style={{ backgroundColor: state.color }}
+              className='bg-blue-100 border text-left px-8 py-4'
+            ></th>
+            <th
+              style={{ backgroundColor: state.color }}
+              className='bg-blue-100 border text-left px-8 py-4'
+            >
+              Servicio
+            </th>
+            <th
+              style={{ backgroundColor: state.color }}
+              className='bg-blue-100 border text-left px-8 py-4'
+            >
+              Precio
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {state.store?.items.map((item: any) => (
+            <tr key={item.id} className=' bg-white lg:hover:bg-gray-400'>
+              <td className='w-full p-3 text-gray-800 text-center border border-b '>
+                <input
+                  className='h-5 w-5 cursor-pointer'
+                  type='checkbox'
+                  value={item.id}
+                  onChange={handleChecked}
+                />
+              </td>
+              <td className='w-full p-3 text-gray-800 border border-b text-center'>
+                {item.name}
+              </td>
 
-                <td className='w-full lg:w-auto p-3 text-gray-800  border border-b text-center block lg:table-cell relative lg:static'>
-                  {`${item.price} DOP`}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {bb && <ButtonBook openModal={openModal} />}
+              <td className='w-full p-3 text-gray-800  border border-b text-center '>
+                {`${item.price} DOP`}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {bb && <ButtonBook openModal={state.openModal} />}
     </div>
   );
 };

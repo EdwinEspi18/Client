@@ -1,9 +1,6 @@
-import { useState } from "react";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { shallow } from "zustand/shallow";
-import { format, getDate, getDay } from "date-fns";
-import es from "date-fns/locale/es";
 
 import "react-nice-dates/build/style.css";
 
@@ -21,108 +18,101 @@ import {
   UbicationCard,
   Modal,
   Sppiner,
+  HoursAvaible,
 } from "@/components";
 
 const IdPage = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
-  const { color: colorState, setColorPrimary } = useStore(
+  const { owner_id } = props;
+
+  const state = useStore(
     (state) => ({
+      store: state.store,
+      date: state.date,
       color: state.color,
+      isOpen: state.isOpen,
       setColorPrimary: state.setColorPrimary,
+      openModal: state.openModal,
+      closeModal: state.closeModal,
+      setModifier: state.setModifier,
+      setStore: state.setStore,
+      setOwner: state.setOwner,
     }),
     shallow
   );
-  const { owner_id } = props;
-  const [date, setDate] = useState(new Date());
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  const modifiers = (day: number) => {
-    return {
-      disabled: (date: Date) => getDay(date) === day,
-    };
-  };
-
-  const handleChangeDate = (e: any) => {
-    const dateFormat = format(e, "dd/MM/yyyy", { locale: es });
-    openModal();
-    setDate(e);
-    console.log(e);
-  };
 
   const {
     data: { data },
     isLoading,
+    isSuccess,
   } = trpc.getStore.useQuery(owner_id, {
     onSuccess(data) {
-      console.log(data);
+      state.setStore(store);
+      state.setColorPrimary(color);
+      state.setOwner(owner_id);
     },
   });
 
   const store: Stores = data[0];
 
   const color = `#${store.color_hex}`;
-  setColorPrimary(color);
+
+  //{ disabled: (date: Date) => getDay(date) === 6 }
+  /* const modifiers = (day: number) => {
+    return {
+      disabled: (date: Date) => getDay(date) === day,
+    };
+  }; */
+
+  /*   const handleChangeDate = (e: Date) => {
+    const dateFormat = format(e, "dd/MM/yyyy", { locale: es });
+    state.openModal();
+    console.log(e);
+  }; */
 
   if (isLoading) return <Sppiner />;
-
   return (
     <div className='h-screen w-full relative'>
-      <h1 className='pt-3 text-center text-3xl font-bold'>
+      <h1 className='pt-3 text-center text-3xl font-bold max-sm:text-2xl max-sm:mt-5'>
         {store.store_name}
       </h1>
-      <div className='grid grid-cols-2 grid-rows-1 w-full h-full'>
-        <TableServices
-          color={colorState}
-          items={store.items}
-          openModal={openModal}
-        />
+      <div className='w-full h-full flex justify-around gap-20 max-sm:flex-col max-sm:gap-10 max-sm:mt-14'>
+        <div className='w-3/6 h-auto flex mt-8 justify-end  max-sm:w-full max-sm:justify-center'>
+          <TableServices />
+        </div>
 
-        <div className='w-full'>
+        <div className='flex justify-start flex-col w-3/6 max-sm:w-full'>
           {store.images && (
-            <div className='w-8/12 h-[460px] flex flex-col items-center justify-center rounded-lg mx-auto '>
-              <SliderImages color={colorState} images={store.images} />
+            <div className='w-8/12 h-[460px] flex flex-col items-center justify-center rounded-lg'>
+              <SliderImages color={state.color} images={store.images} />
             </div>
           )}
           {store.latitude && (
             <UbicationCard
-              color={colorState}
+              color={state.color}
               latitude={store.latitude}
               longitude={store.longitude}
               address={store.address}
             />
           )}
-          <SchedulesCard schedules={store.schedules} color={colorState} />
-          <StaffMember color={colorState} />
-          <div className='mt-3 w-8/12 h-auto mx-auto rounded-lg'>
+          <SchedulesCard schedules={store.schedules} color={state.color} />
+          <StaffMember color={state.color} />
+          <div className='mt-3 w-3/6 h-auto  rounded-lg'>
             <h2 className='font-bold text-2xl'>
               Reseñas de clientes (
               {store.reviews === null ? "0" : store.reviews.length})
             </h2>
           </div>
-          {store.reviews &&
+          {state.store?.reviews != null &&
             store.reviews.map((review) => (
               <ReviewsCard key={review.comment} reviews={review} />
             ))}
         </div>
-        <Modal
-          isOpen={isOpen}
-          closeModal={closeModal}
-          date={date}
-          modifiers={{ disabled: (date: Date) => getDay(date) === 6 }}
-          handleChangeDate={handleChangeDate}
-          owner_id={owner_id}
-        />
       </div>
+      <Modal>
+        <HoursAvaible />
+      </Modal>
     </div>
   );
 };
