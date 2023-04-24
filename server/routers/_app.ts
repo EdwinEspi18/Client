@@ -2,6 +2,23 @@ import { z } from "zod";
 import { procedure, router } from "../trpc";
 import { supabase } from "@/supabase/client";
 
+const valid = z.object({
+  appointment_from: z.string(),
+  appointment_to: z.string(),
+  customer_name: z.optional(z.string()),
+  customer_phone_number: z.string(),
+  item_details: z.array(
+    z.object({
+      item_id: z.string(),
+      duration_in_minutes: z.number(),
+      quantity: z.number(),
+      price: z.number(),
+    })
+  ),
+  note: z.optional(z.string()),
+  store_id: z.string(),
+});
+
 export const appRouter = router({
   hello: procedure
     .input(
@@ -21,22 +38,17 @@ export const appRouter = router({
 
     return { data, error };
   }),
-  setCita: procedure.input(z.object({})).mutation(async ({ input }) => {
+  setCita: procedure.input(valid).mutation(async ({ input }) => {
+    console.log(input.appointment_from);
+    console.log(input.appointment_to);
     let { data, error } = await supabase.rpc("request_appointment", {
-      appointment_from: "2023-04-17 05:30:00", // requerido
-      appointment_to: "2023-04-17 06:00:00", // requerido
-      customer_name: "", // opcional
-      customer_phone_number: "8092181625", // requerido
-      item_details: [
-        {
-          item_id: "18808335-162b-4664-917c-e208dda56961",
-          duration_in_minutes: 15,
-          quantity: 1,
-          price: 20,
-        },
-      ], // requerido
-      note: "", // opcional
-      store_id: "0aa50a38-87be-4132-a223-44f429822b9a", // requerido
+      appointment_from: input.appointment_from,
+      appointment_to: input.appointment_to,
+      customer_name: input.customer_name,
+      customer_phone_number: input.customer_phone_number,
+      item_details: input.item_details,
+      note: input.note,
+      store_id: input.store_id,
     });
     return { data, error };
   }),

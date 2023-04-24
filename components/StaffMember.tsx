@@ -5,12 +5,15 @@ interface Props {
   color: string;
 }
 
-export const StaffMember = ({ color }: Props) => {
+export const StaffMember = () => {
   const store = useStore((state) => state.store);
+  const color = useStore((state) => state.color);
   return (
     <div
-      style={{ backgroundColor: color }}
-      className='mt-8 w-3/6 h-28 rounded-lg shadow-lg max-sm:w-5/6 max-sm:mx-auto'
+      className={`mt-8 w-3/6 h-28 rounded-lg shadow-lg max-sm:w-full max-sm:mx-auto`}
+      style={{
+        backgroundColor: color,
+      }}
     >
       <h2 className='font-bold pt-3 pl-5'>Miembros</h2>
       <div className='flex flex-col justify-around w-full'>

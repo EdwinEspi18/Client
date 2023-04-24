@@ -1,13 +1,13 @@
 import { Dialog } from "@headlessui/react";
 import { useStore } from "@/store/store";
 import { shallow } from "zustand/shallow";
-import { FC, PropsWithChildren } from "react";
+import { HoursAvaible } from "./HoursAvaible";
 
-export const Modal: FC<PropsWithChildren> = ({ children }) => {
+export const ModalHours = () => {
   const state = useStore(
     (state) => ({
-      isOpen: state.isOpen,
-      closeModal: state.closeModal,
+      isOpen: state.isOpenHours,
+      closeModal: state.closeModalHours,
     }),
     shallow
   );
@@ -21,7 +21,7 @@ export const Modal: FC<PropsWithChildren> = ({ children }) => {
         <div className='flex h-full items-center justify-center p-4 text-center '>
           <Dialog.Panel className=' w-3/6 h-3/4 transform rounded-2xl bg-white p-6 text-left  shadow-xl transition-all max-sm:w-full'>
             <div className='h-full w-3/4 mx-auto my-auto max-sm:w-full'>
-              {children}
+              <HoursAvaible />
             </div>
           </Dialog.Panel>
         </div>

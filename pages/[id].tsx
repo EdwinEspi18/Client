@@ -5,7 +5,6 @@ import { shallow } from "zustand/shallow";
 import "react-nice-dates/build/style.css";
 
 import { trpc } from "@/utils/trpc";
-import { Stores } from "@/types/database";
 import { appRouter } from "@/server/routers/_app";
 import { useStore } from "@/store/store";
 
@@ -16,9 +15,10 @@ import {
   StaffMember,
   TableServices,
   UbicationCard,
-  Modal,
+  ModalHours,
   Sppiner,
-  HoursAvaible,
+  ModalCustomer,
+  ModalCheckout,
 } from "@/components";
 
 const IdPage = (
@@ -29,90 +29,60 @@ const IdPage = (
   const state = useStore(
     (state) => ({
       store: state.store,
-      date: state.date,
       color: state.color,
-      isOpen: state.isOpen,
       setColorPrimary: state.setColorPrimary,
-      openModal: state.openModal,
-      closeModal: state.closeModal,
-      setModifier: state.setModifier,
       setStore: state.setStore,
       setOwner: state.setOwner,
     }),
     shallow
   );
 
-  const {
-    data: { data },
-    isLoading,
-    isSuccess,
-  } = trpc.getStore.useQuery(owner_id, {
-    onSuccess(data) {
-      state.setStore(store);
-      state.setColorPrimary(color);
+  const { isLoading } = trpc.getStore.useQuery(owner_id, {
+    onSuccess({ data }) {
+      state.setStore(data[0]);
+      state.setColorPrimary(`#${data[0].color_hex}59`);
       state.setOwner(owner_id);
     },
   });
-
-  const store: Stores = data[0];
-
-  const color = `#${store.color_hex}`;
-
-  //{ disabled: (date: Date) => getDay(date) === 6 }
-  /* const modifiers = (day: number) => {
-    return {
-      disabled: (date: Date) => getDay(date) === day,
-    };
-  }; */
-
-  /*   const handleChangeDate = (e: Date) => {
-    const dateFormat = format(e, "dd/MM/yyyy", { locale: es });
-    state.openModal();
-    console.log(e);
-  }; */
 
   if (isLoading) return <Sppiner />;
   return (
     <div className='h-screen w-full relative'>
       <h1 className='pt-3 text-center text-3xl font-bold max-sm:text-2xl max-sm:mt-5'>
-        {store.store_name}
+        {state.store?.store_name}
       </h1>
-      <div className='w-full h-full flex justify-around gap-20 max-sm:flex-col max-sm:gap-10 max-sm:mt-14'>
-        <div className='w-3/6 h-auto flex mt-8 justify-end  max-sm:w-full max-sm:justify-center'>
+      <div className='w-full h-full flex justify-around gap-20 max-sm:gap-5 max-sm:flex-col max-sm:mt-8 max-sm:h-auto'>
+        <div className='w-3/6 h-auto flex mt-8 justify-end  max-sm:w-full max-sm:justify-center max-sm:mt-3'>
           <TableServices />
         </div>
 
-        <div className='flex justify-start flex-col w-3/6 max-sm:w-full'>
-          {store.images && (
-            <div className='w-8/12 h-[460px] flex flex-col items-center justify-center rounded-lg'>
-              <SliderImages color={state.color} images={store.images} />
+        <div className='h-20 w-3/6 mt-8  max-sm:mt-0 max-sm:w-5/6 max-sm:mx-auto'>
+          {state.store?.images && (
+            <div className='w-3/6 h-full flex flex-col items-center justify-center rounded-lg max-sm:mt-0 max-sm:w-full max-sm:mx-auto'>
+              <SliderImages />
             </div>
           )}
-          {store.latitude && (
-            <UbicationCard
-              color={state.color}
-              latitude={store.latitude}
-              longitude={store.longitude}
-              address={store.address}
-            />
-          )}
-          <SchedulesCard schedules={store.schedules} color={state.color} />
-          <StaffMember color={state.color} />
-          <div className='mt-3 w-3/6 h-auto  rounded-lg'>
-            <h2 className='font-bold text-2xl'>
+          {state.store?.latitude && <UbicationCard />}
+          <SchedulesCard />
+          <StaffMember />
+          <div className='mt-3 w-3/6 h-auto rounded-lg'>
+            <h2 className='font-bold text-2xl max-sm:w-full'>
               Reseñas de clientes (
-              {store.reviews === null ? "0" : store.reviews.length})
+              {state.store?.reviews === null
+                ? "0"
+                : state.store?.reviews.length}
+              )
             </h2>
           </div>
           {state.store?.reviews != null &&
-            store.reviews.map((review) => (
+            state.store.reviews.map((review) => (
               <ReviewsCard key={review.comment} reviews={review} />
             ))}
         </div>
       </div>
-      <Modal>
-        <HoursAvaible />
-      </Modal>
+      <ModalHours />
+      <ModalCustomer />
+      <ModalCheckout />
     </div>
   );
 };

@@ -12,7 +12,7 @@ const poppinsFont = Poppins({
 });
 function App({ Component, pageProps }: AppProps) {
   return (
-    <main className={poppinsFont.className}>
+    <main className={poppinsFont.className + "w-screen h-screen"}>
       <Component {...pageProps} />;
     </main>
   );

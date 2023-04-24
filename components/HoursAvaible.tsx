@@ -1,10 +1,10 @@
 import { DatePicker } from "react-nice-dates";
-import { format } from "date-fns";
+import { addMinutes, format } from "date-fns";
 import es from "date-fns/locale/es";
 import { shallow } from "zustand/shallow";
 
 import { trpc } from "@/utils/trpc";
-import { Sppiner } from "@/components";
+import { ModalCustomer, Sppiner } from "@/components";
 import { useStore } from "@/store/store";
 
 export const HoursAvaible = () => {
@@ -12,9 +12,13 @@ export const HoursAvaible = () => {
     (state) => ({
       date: state.date,
       store: state.store?.profile_id,
+      setApoimentsFrom: state.setAppointment_from,
+      setApoimentsTo: state.setAppointment_to,
       modifiers: state.modifiers,
       handleChangeDate: state.handleChangeDate,
       owner_id: state.owner_id,
+      closeModalHours: state.closeModalHours,
+      openModalCustomer: state.openModalCustomer,
     }),
     shallow
   );
@@ -26,7 +30,15 @@ export const HoursAvaible = () => {
   });
 
   const handleClick = (e: any) => {
-    console.log(e);
+    const date = new Date(e);
+    const toDate = addMinutes(date, 30);
+    const from = format(date, "yyyy-LL-dd HH:mm:ss");
+    const to = format(toDate, "yyyy-LL-dd HH:mm:ss");
+
+    state.setApoimentsFrom(from);
+    state.setApoimentsTo(to);
+    state.closeModalHours();
+    state.openModalCustomer();
   };
 
   return (

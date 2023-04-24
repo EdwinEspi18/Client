@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import { Store_images } from "@/types/database";
+import { useStore } from "@/store/store";
 
-interface Props {
-  images?: Store_images[];
-  color?: string;
-}
-export const SliderImages = ({ images = [], color }: Props) => {
+export const SliderImages = () => {
+  const images = useStore((state) => state.store?.images);
+  const color = useStore((state) => state.color);
+
   const prevSlide = () => {
     const isFirst = currentIndex === 0;
     const newIndex = isFirst ? images?.length - 1 : currentIndex - 1;
@@ -19,15 +18,17 @@ export const SliderImages = ({ images = [], color }: Props) => {
   };
   const [currentIndex, setCurrentIndex] = useState(0);
   return (
-    <div className='w-full h-full m-auto py-16 px-4 relative group'>
+    <div className='w-full h-full relative shadow-lg'>
       <div
         style={{ backgroundImage: `url(${images[currentIndex]?.image_url})` }}
-        className='w-full h-full rounded-tl-2xl rounded-tr-2xl bg-center bg-cover duration-500'
+        className='w-full h-48 rounded-tl-2xl rounded-tr-2xl bg-center bg-cover duration-500 '
       ></div>
 
       <div
-        className=' w-full h-12  rounded-bl-2xl rounded-br-2xl flex justify-between items-center mx-auto'
-        style={{ backgroundColor: color }}
+        className={`w-full h-12 rounded-bl-2xl rounded-br-2xl shadow-lg flex justify-between items-center mx-auto`}
+        style={{
+          backgroundColor: color,
+        }}
       >
         <div
           onClick={prevSlide}
