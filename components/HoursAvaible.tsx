@@ -19,22 +19,30 @@ export const HoursAvaible = () => {
       owner_id: state.owner_id,
       closeModalHours: state.closeModalHours,
       openModalCustomer: state.openModalCustomer,
+      services: state.services,
     }),
     shallow
   );
+  const store = useStore((state) => state.store);
 
   const { data, isSuccess, isLoading } = trpc.getSchedulesAvaible.useQuery({
     profile_id: state.owner_id,
-    duration_in_minutes: 30,
+    duration_in_minutes: store?.schedule_cell_minutes_interval!,
     start_date: state.date.toDateString(),
   });
 
+  console.log(store);
   const handleClick = (e: any) => {
     const date = new Date(e);
-    const toDate = addMinutes(date, 30);
+    let minutess: number = 0;
+    const minutes = state.services.map((service) => {
+      minutess += service.duration_in_minutes;
+    });
+    const toDate = addMinutes(date, minutess);
     const from = format(date, "yyyy-LL-dd HH:mm:ss");
     const to = format(toDate, "yyyy-LL-dd HH:mm:ss");
 
+    console.log(from, to);
     state.setApoimentsFrom(from);
     state.setApoimentsTo(to);
     state.closeModalHours();

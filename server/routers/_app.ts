@@ -39,8 +39,6 @@ export const appRouter = router({
     return { data, error };
   }),
   setCita: procedure.input(valid).mutation(async ({ input }) => {
-    console.log(input.appointment_from);
-    console.log(input.appointment_to);
     let { data, error } = await supabase.rpc("request_appointment", {
       appointment_from: input.appointment_from,
       appointment_to: input.appointment_to,

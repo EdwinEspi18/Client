@@ -1,6 +1,7 @@
 import { ReservationStore, useStore } from "@/store/store";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { shallow } from "zustand/shallow";
+import { toast } from "react-toastify";
 
 export const FormCustomer = () => {
   const [inputs, setInputs] = useState({ name: "", telefono: "" });
@@ -22,6 +23,12 @@ export const FormCustomer = () => {
   };
   const handleClick = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (inputs.telefono === "") {
+      return toast.error("Debe especificar un numero de telefono", {
+        position: "top-right",
+      });
+    }
     const request: ReservationStore = {
       appointment_from: state.appointment_from,
       appointment_to: state.appointment_to,
@@ -55,7 +62,7 @@ export const FormCustomer = () => {
           name='telefono'
           type='tel'
           value={inputs.telefono}
-          pattern='[0-9]{3}-[0-9]{3}-[0-9]{4}'
+          pattern='[0-9]{3}[0-9]{3}[0-9]{4}'
           placeholder='Telefono Movil'
           className='w-full h-10 rounded-lg p-3 border-collapse border-2 shadow-md invalid:border-red-500 required '
         />

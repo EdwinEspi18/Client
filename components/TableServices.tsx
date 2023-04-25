@@ -2,8 +2,6 @@ import { ChangeEvent, useState } from "react";
 
 import { useStore } from "@/store/store";
 import { shallow } from "zustand/shallow";
-import { clsx } from "clsx";
-
 const ButtonBook = ({ openModal }: any) => {
   const color = useStore((state) => state.color);
   return (
@@ -34,7 +32,7 @@ export const TableServices = () => {
   const [check, setCheck] = useState(false);
 
   const handleChecked = (
-    name: string,
+    duration: number,
     id: string,
     price: string,
     e: ChangeEvent<HTMLInputElement>
@@ -50,12 +48,11 @@ export const TableServices = () => {
       item_id: id,
       price: parseInt(price),
       quantity: 1,
-      duration_in_minutes: 30,
+      duration_in_minutes: duration,
     });
   };
 
   const color = state.color;
-  console.log(state.color);
 
   return (
     <div className='h-auto'>
@@ -87,7 +84,12 @@ export const TableServices = () => {
                   type='checkbox'
                   value={item.id}
                   onChange={(e) =>
-                    handleChecked(item.name, item.id, item.price, e)
+                    handleChecked(
+                      item.duration_in_minutes!,
+                      item.id,
+                      item.price,
+                      e
+                    )
                   }
                 />
               </td>
@@ -102,7 +104,7 @@ export const TableServices = () => {
           ))}
         </tbody>
       </table>
-      {check && <ButtonBook openModal={state.openModal} />}
+      {state.services.length != 0 && <ButtonBook openModal={state.openModal} />}
     </div>
   );
 };

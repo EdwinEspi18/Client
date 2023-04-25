@@ -3,6 +3,7 @@ import { trpc } from "@/utils/trpc";
 import { Dialog } from "@headlessui/react";
 import { format } from "date-fns";
 import { shallow } from "zustand/shallow";
+import { toast } from "react-toastify";
 
 export const ModalCheckout = () => {
   const reservation = trpc.setCita.useMutation();
@@ -13,6 +14,7 @@ export const ModalCheckout = () => {
       closeModal: state.closeModalCheckout,
       color: state.color,
       request: state.requestReservartion,
+      clearRequest: state.setRequestClear,
     }),
     shallow
   );
@@ -22,9 +24,16 @@ export const ModalCheckout = () => {
   const handleClick = () => {
     reservation.mutate(state.request, {
       onSuccess(data, variables, context) {
+        toast.success("Reservacion realizada con exito", {
+          position: "top-right",
+        });
         console.log(" TRPC REsult: ", data, variables);
+        state.clearRequest();
       },
       onError(error, variables, context) {
+        toast.error("Fallo al realizar la reservacion", {
+          position: "top-right",
+        });
         console.log(error, variables);
       },
     });
@@ -85,8 +94,9 @@ export const ModalCheckout = () => {
                 </tbody>
               </table>
               <button
-                className='absolute bottom-0 bg-sky-400 rounded-lg p-2 w-full'
+                className='absolute bottom-0 rounded-lg p-2 w-full'
                 onClick={handleClick}
+                style={{ backgroundColor: state.color }}
               >
                 Hacer reservacion
               </button>

@@ -1,8 +1,10 @@
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { shallow } from "zustand/shallow";
+import { ToastContainer } from "react-toastify";
 
 import "react-nice-dates/build/style.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import { trpc } from "@/utils/trpc";
 import { appRouter } from "@/server/routers/_app";
@@ -83,6 +85,7 @@ const IdPage = (
       <ModalHours />
       <ModalCustomer />
       <ModalCheckout />
+      <ToastContainer />
     </div>
   );
 };
