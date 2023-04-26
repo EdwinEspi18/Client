@@ -34,12 +34,3 @@ export const SchedulesCard = () => {
     </div>
   );
 };
-
-// {format(new Date(item.datetime), "h", {
-//                 locale: es,
-//               })}
-//               :
-//               {format(new Date(item.datetime), "mm", {
-//                 locale: es,
-//               })}
-//               {new Date(item.datetime).getHours() >= 12 ? " PM" : " AM"}

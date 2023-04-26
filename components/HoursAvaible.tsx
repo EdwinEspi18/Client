@@ -5,7 +5,6 @@ import { shallow } from "zustand/shallow";
 
 import { trpc } from "@/utils/trpc";
 import { ModalCustomer, Sppiner } from "@/components";
-import {DatePickerInput} from '@/components/DatePickerInput'
 import { useStore } from "@/store/store";
 
 export const HoursAvaible = () => {
@@ -52,8 +51,6 @@ export const HoursAvaible = () => {
 
   return (
     <>
-    
-    <DatePickerInput />
       {isLoading && <Sppiner />}
       {isSuccess && (
         <ul className='w-full h-5/6 flex flex-col items-center justify-between gap-2 overflow-y-auto mt-8 p-2  max-sm:w-full'>
