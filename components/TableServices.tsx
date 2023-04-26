@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 
 import { useStore } from "@/store/store";
 import { shallow } from "zustand/shallow";
+
 const ButtonBook = ({ openModal }: any) => {
   const color = useStore((state) => state.color);
   return (
@@ -98,7 +99,7 @@ export const TableServices = () => {
               </td>
 
               <td className='w-full p-3 text-gray-800  border border-b text-center '>
-                {`${item.price} DOP`}
+                {`${item.price} ${state.store.currency_code}`}
               </td>
             </tr>
           ))}
@@ -108,6 +109,4 @@ export const TableServices = () => {
     </div>
   );
 };
-/* className={
-                  "bg-opacity-40 border text-left px-8 py-4" 
-                } */
+

@@ -1,10 +1,11 @@
-import { DatePicker } from "react-nice-dates";
+
 import { addMinutes, format } from "date-fns";
 import es from "date-fns/locale/es";
 import { shallow } from "zustand/shallow";
 
 import { trpc } from "@/utils/trpc";
 import { ModalCustomer, Sppiner } from "@/components";
+import {DatePickerInput} from '@/components/DatePickerInput'
 import { useStore } from "@/store/store";
 
 export const HoursAvaible = () => {
@@ -51,29 +52,8 @@ export const HoursAvaible = () => {
 
   return (
     <>
-      <DatePicker
-        date={state.date}
-        onDateChange={state.handleChangeDate}
-        locale={es}
-        modifiers={state.modifiers}
-        minimumDate={new Date()}
-      >
-        {({ inputProps, focused }) => (
-          <input
-            className={
-              " w-full border border-gray-400 p-2" +
-              (focused ? " -focused" : "")
-            }
-            {...inputProps}
-            value={
-              state.date
-                ? format(state.date, "EEEE dd MMMM yyyy", { locale: es })
-                : "none"
-            }
-            type='text'
-          />
-        )}
-      </DatePicker>
+    
+    <DatePickerInput />
       {isLoading && <Sppiner />}
       {isSuccess && (
         <ul className='w-full h-5/6 flex flex-col items-center justify-between gap-2 overflow-y-auto mt-8 p-2  max-sm:w-full'>
