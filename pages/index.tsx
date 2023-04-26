@@ -15,9 +15,10 @@ export default function Home() {
         <input
           className={'input' + (focused ? ' -focused' : '')}
           {...inputProps}
+          blur={ !focused }
         />
       )}
-    </DatePicker>
+    </DatePicker>r
 
     </div>
   );
