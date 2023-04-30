@@ -9,7 +9,7 @@ const ButtonBook = ({ openModal }: any) => {
     <button
       onClick={openModal}
       style={{ backgroundColor: color }}
-      className='fixed  bottom-5 right-5 bg-yellow-400 w-32 h-12 rounded-xl'
+      className='fixed bottom-5 right-5  w-32 h-12 rounded-xl opacity-100'
     >
       Reservar
     </button>
@@ -109,4 +109,3 @@ export const TableServices = () => {
     </div>
   );
 };
-

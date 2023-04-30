@@ -14,21 +14,21 @@ export const UbicationCard = () => {
   return (
     <div
       style={{ backgroundColor: state.color }}
-      className='w-8/12 h-40 mx-auto rounded-lg mt-3'
+      className='w-3/6 h-32  rounded-lg mt-48 max-sm:w-full max-sm:mx-auto'
     >
       <h2 className='font-bold pt-3 pl-5'>Ubicacion</h2>
       <p className='pl-5'>{state.address}</p>
-      <div className='w-full flex justify-around mt-6'>
+      <div className='w-full flex justify-around mt-4'>
         <a
           href={`https://www.google.com/maps/dir/?api=1&destination=${state.latitude}, ${state.longitude}`}
-          className='bg-gray-300 rounded-lg w-40 h-10 flex items-center justify-center'
+          className='bg-gray-300 rounded-lg w-32 h-10 text-sm flex items-center justify-center'
           target='_blank'
         >
           <span className=''>Obtener direccion</span>
         </a>
         <a
           href={`https://www.google.com/maps/search/?api=1&query=${state.latitude},${state.longitude}`}
-          className='bg-gray-300 rounded-lg w-40 h-10  flex items-center justify-center'
+          className='bg-gray-300 rounded-lg w-32 h-10 text-sm flex items-center justify-center'
           target='_blank'
         >
           <span>Ver en mapa</span>
