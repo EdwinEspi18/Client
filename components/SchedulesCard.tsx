@@ -9,7 +9,7 @@ export const SchedulesCard = () => {
 
   return (
     <div
-      className={`mt-48 w-3/6 h-auto shadow-lg rounded-lg  max-sm:w-full max-sm:mx-auto `}
+      className='mt-8 w-3/6 h-auto shadow-lg rounded-lg  max-sm:w-full max-sm:mx-auto'
     >
       <h2 className={`font-bold pt-2 pl-5`} style={{ color: `#${color}` }}>
         Horas de trabajo
