@@ -14,7 +14,7 @@ export const UbicationCard = () => {
   return (
     <div
       style={{ backgroundColor: state.color }}
-      className='mt-48 w-3/6 h-32 rounded-lg mt-3 max-sm:w-full max-sm:mx-auto'
+      className='mt-48 w-3/6 h-32 rounded-lg max-sm:w-full max-sm:mx-auto'
     >
       <h2 className='font-bold pt-3 pl-5'>Ubicacion</h2>
       <p className='pl-5'>{state.address}</p>
