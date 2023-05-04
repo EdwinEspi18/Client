@@ -10,7 +10,7 @@ export const StaffMember = () => {
   const color = useStore((state) => state.color);
   return (
     <div
-      className={`mt-8 w-3/6 h-28 rounded-lg shadow-lg max-sm:w-full max-sm:mx-auto`}
+      className='mt-8 w-3/6 h-28 rounded-lg shadow-lg max-sm:w-full max-sm:mx-auto max-lg:w-11/12 max-xl:w-4/6'
       style={{
         backgroundColor: color,
       }}

@@ -9,7 +9,7 @@ export const SchedulesCard = () => {
   const color = useStore((state) => state.store?.color_hex);
 
   return (
-    <div className='mt-8 w-3/6 h-auto shadow-lg rounded-lg  max-sm:w-full max-sm:mx-auto'>
+    <div className='mt-8 w-3/6 h-auto shadow-lg rounded-lg  max-sm:w-full max-sm:mx-auto max-lg:w-11/12 max-xl:w-4/6'>
       <h2 className={`font-bold pt-2 pl-5`} style={{ color: `#${color}` }}>
         Horas de trabajos
       </h2>
