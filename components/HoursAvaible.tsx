@@ -1,4 +1,3 @@
-
 import { addMinutes, format } from "date-fns";
 import es from "date-fns/locale/es";
 import { shallow } from "zustand/shallow";
@@ -60,7 +59,7 @@ export const HoursAvaible = () => {
               className={
                 "w-full rounded-lg text-white text-center cursor-pointer" +
                 (item.available
-                  ? " bg-green-500"
+                  ? " bg-green-500 hover:bg-green-600"
                   : " bg-red-500 pointer-events-none")
               }
               onClick={() => handleClick(item.datetime)}
@@ -75,8 +74,19 @@ export const HoursAvaible = () => {
               {new Date(item.datetime).getHours() >= 12 ? " PM" : " AM"}
             </li>
           ))}
+          {data.data.length === 0 && (
+            <li className='w-full rounded-lg text-white text-center cursor-pointer bg-red-700 pointer-events-none'>
+              No hay horario disponible, Selecciona otra fecha
+            </li>
+          )}
         </ul>
       )}
     </>
   );
 };
+/*
+{data.data.length === 0 && (
+            <li className='w-full rounded-lg text-white text-center cursor-pointer bg-red-700'>
+              No hay horario disponible, Selecciona otra fecha
+            </li>
+          )} */
