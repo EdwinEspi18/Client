@@ -28,7 +28,7 @@ export const UbicationCard = () => {
         </a>
         <a
           href={`https://www.google.com/maps/search/?api=1&query=${state.latitude},${state.longitude}`}
-          className='bg-gray-300 rounded-lg w-40 h-10 flex items-center justify-center max-sm:w-28 max-lg:w-24'
+          className='bg-gray-300 rounded-lg w-38 p-3 h-10 flex items-center justify-center max-sm:w-28 max-lg:w-24'
           target='_blank'
         >
           <span className='max-sm:text-sm'>Ver en mapa</span>
