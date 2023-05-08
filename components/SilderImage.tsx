@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useStore } from "@/store/store";

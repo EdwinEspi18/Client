@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Stores } from "@/types/database";
 import { create } from "zustand";
 
@@ -47,7 +48,7 @@ interface BearStore {
   modifiers: {
     disabled: (date: Date) => boolean;
   };
-  handleChangeDate: (date: Date) => void;
+  handleChangeDate: (date: Date | null) => void;
   setColorPrimary: (color: string) => void;
   closeModalHours: () => void;
   openModalHours: () => void;

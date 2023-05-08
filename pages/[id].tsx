@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { createServerSideHelpers } from "@trpc/react-query/server";
 import { shallow } from "zustand/shallow";

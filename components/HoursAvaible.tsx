@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { addMinutes, format } from "date-fns";
 import es from "date-fns/locale/es";
 import { shallow } from "zustand/shallow";

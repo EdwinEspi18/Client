@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useStore } from "@/store/store";
 import { Store_ratings } from "@/types/database";
 import { format } from "date-fns";

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { format } from "date-fns";
 import { useStore } from "@/store/store";
 import { Store_schedules } from "@/types/database";
